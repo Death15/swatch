@@ -8,4 +8,4 @@ reboot=`reboot`
 echo "$copy_conf"
 echo "$copy_etc"
 echo "$reboot"
-echo "Server Reboted"
+echo "Server has been Reboted"
