@@ -27,7 +27,7 @@ function get_receiver(msg)
 end
 
 function is_chat_msg( msg )
-  if msg.to.type == 'chat' then
+  if msg.to.type == 'chat' or msg.to.type == 'channel' then
     return true
   end
   return false
@@ -157,6 +157,50 @@ function is_sudo(msg)
   for v,user in pairs(_config.sudo_users) do
     if user == msg.from.id then
       var = true
+    end
+  end
+  return var
+end
+
+-- user has admins privileges
+function is_admin(msg)
+  local var = false
+  local data = load_data(_config.moderation.data)
+  local user = msg.from.id
+  local admins = 'admins'
+  if data[tostring(admins)] then
+    if data[tostring(admins)][tostring(user)] then
+      var = true
+    end
+  end
+  for v,user in pairs(_config.sudo_users) do
+    if user == msg.from.id then
+        var = true
+    end
+  end
+  return var
+end
+
+-- user has moderator privileges
+function is_momod(msg)
+  local var = false
+  local data = load_data(_config.moderation.data)
+  local user = msg.from.id
+  if data[tostring(msg.to.id)] then
+    if data[tostring(msg.to.id)]['moderators'] then
+      if data[tostring(msg.to.id)]['moderators'][tostring(user)] then
+        var = true
+      end
+    end
+  end
+  if data['admins'] then
+    if data['admins'][tostring(user)] then
+      var = true
+    end
+  end
+  for v,user in pairs(_config.sudo_users) do
+    if user == msg.from.id then
+        var = true
     end
   end
   return var
