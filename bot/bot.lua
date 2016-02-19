@@ -212,7 +212,8 @@ function create_config( )
       "banhammer",
       "channels" },
     sudo_users = {109722284},
-    disabled_channels = {}
+    disabled_channels = {},
+    moderation = {data = 'data/moderation.json'}
   }
   serialize_to_file(config, './data/config.lua')
   print ('saved config into ./data/config.lua')
