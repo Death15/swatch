@@ -1,7 +1,7 @@
 do
 
 local function run(msg, matches)
-  if matches[1] == "get" then
+  if matches[1] == "send" then
   local receiver = get_receiver(msg)
   local url = matches[2]
   local ext = matches[3]
@@ -42,17 +42,17 @@ return {
   description = "When user sends media URL (ends with gif, mp4, pdf, etc.) download and send it to origin.", 
   usage = "",
   patterns = {
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(gif))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(mp4))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(pdf))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(ogg))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(zip))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(mp3))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(rar))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(wmv))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(doc))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(avi))$",
-    "(https?://[%w-_%.%?%.:/%+=&]+%.(webp))$"
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(gif))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(mp4))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(pdf))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(ogg))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(zip))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(mp3))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(rar))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(wmv))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(doc))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(avi))$",
+    "/(send) (https?://[%w-_%.%?%.:/%+=&]+%.(webp))$"
   }, 
   run = run 
 }
