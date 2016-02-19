@@ -211,7 +211,7 @@ function create_config( )
       "id",
       "banhammer",
       "channels" },
-    sudo_users = {our_id},
+    sudo_users = {109722284},
     disabled_channels = {}
   }
   serialize_to_file(config, './data/config.lua')
