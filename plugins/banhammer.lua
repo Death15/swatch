@@ -17,20 +17,20 @@ local function kick_user(user_id, chat_id)
   if user_id == tostring(our_id) then
     send_msg(chat, "I won't kick myself!", ok_cb,  true)
   else
-    chat_del_user(chat, user, ok_cb, true)
+    channel_kick_user(channel, user, ok_cb, true)
   end
 end
 
 local function ban_user(user_id, chat_id)
-  local chat = 'chat#id'..chat_id
+  local channel = 'channel#id'..channel_id
   if user_id == tostring(our_id) then
     send_msg(chat, "I won't kick myself!", ok_cb,  true)
   else
     -- Save to redis
-    local hash =  'banned:'..chat_id..':'..user_id
+    local hash =  'banned:'..channel_id..':'..user_id
     redis:set(hash, true)
-    -- Kick from chat
-    kick_user(user_id, chat_id)
+    -- Kick from channel
+    channel_kick_user(channel, user, ok_cb, false)
   end
 end
 
@@ -67,11 +67,11 @@ local function pre_process(msg)
   -- BANNED USER TALKING
   if msg.to.type == 'chat' or msg.to.type == 'channel' then
     local user_id = msg.from.id
-    local chat_id = msg.to.id
-    local banned = is_banned(user_id, chat_id)
+    local channel_id = msg.to.id
+    local banned = is_banned(user_id, channel_id)
     if banned then
       print('Banned user talking!')
-      ban_user(user_id, chat_id)
+      channel_kick_user(channel, user, ok_cb, flase)
       msg.text = ''
     end
   end
@@ -121,15 +121,15 @@ local function run(msg, matches)
 
   if matches[1] == 'ban' then
     local user_id = matches[3]
-    local chat_id = msg.to.id
+    local channel = msg.to.id
 
     if msg.to.type == 'chat' or msg.to.type == 'channel' then
       if matches[2] == 'user' then
-        ban_user(user_id, chat_id)
+        channel_kick_user(chanel, user, ok_cb, false)
         return 'User '..user_id..' banned'
       end
       if matches[2] == 'delete' then
-        local hash =  'banned:'..chat_id..':'..user_id
+        local hash =  'banned:'..channel_id..':'..user_id
         redis:del(hash)
         return 'User '..user_id..' unbanned'
       end
@@ -139,8 +139,10 @@ local function run(msg, matches)
   end
 
   if matches[1] == 'kick' then
-    if msg.to.type == 'chat' or msg.to.type == 'channel' then
-      kick_user(matches[2], msg.to.id)
+    if msg.to.type == 'channel' then
+    	Channel = msg.to.id
+    	User = "user#id"..matches[2]
+      channel_kick_user("user#id"..matches[2], channel, ok_cb, false)
     else
       return 'This isn\'t a chat group'
     end
